@@ -9,6 +9,31 @@ class ProductList extends React.Component {
       isLoaded: false,
       items: []
     };
+
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+
+  }
+
+  handleEdit(item){
+
+    this.props.history.push('/update/' + item.id);
+
+  }
+
+  handleDelete(item){
+
+    fetch("http://localhost:5000/api/products/" + item.id, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      mode: "cors"
+    })
+    .then(()=>this.props.history.push('/delete'))
+    .catch(err => console.log(err));
+
   }
 
   componentDidMount() {
@@ -33,6 +58,9 @@ class ProductList extends React.Component {
       );
   }
 
+
+
+
   render() {
     const { error, isLoaded, items } = this.state;
     if (error) {
@@ -41,13 +69,24 @@ class ProductList extends React.Component {
       return <p>Loading...</p>;
     } else {
       return (
-          <ul>
+          <div className="container-fluid">
             {items.map(item => (
-              <li key={item.id}>
+              <div className="row-fluid mb-2" key={item.id}>
                 {item.name} - {item.category}
-              </li>
+                <div className="float-right">
+                  <button className="btn btn-sm btn-danger mr-1"
+                  onClick={this.handleDelete.bind(this, item)}>
+                    Sterge
+                  </button>
+                  <button className="btn btn-sm btn-primary"
+                  onClick={this.handleEdit.bind(this, item)}>
+                    Editeaza
+                  </button>
+                </div>
+                <hr />
+              </div>
             ))}
-          </ul>
+          </div>
       );
     }
   }
@@ -58,7 +97,7 @@ class Products extends Component {
     return (
       <React.Fragment>
         <h1 className="display-4">Products</h1>
-        <ProductList />
+        <ProductList history={this.props.history} />
         <Validation />
       </React.Fragment>
     );

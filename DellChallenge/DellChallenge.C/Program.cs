@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DellChallenge.C
 {
@@ -16,24 +17,64 @@ namespace DellChallenge.C
 
         private static void StartHere()
         {
-            myObject _MyNewObject = new myObject();
-            int obj1 = _MyNewObject.Do(1, 3);
-            int num2 = _MyNewObject.DoExtended(1, 3, 5);
-            Console.WriteLine(obj1);
-            Console.WriteLine(num2);
+            MyObject _myNewObject = new MyObject(1,3);
+            _myNewObject.AddTheNumbers();
+            _myNewObject.PrintResult();
+
+            MyObject _myNewObject1 = new MyObject(1, 3, 5);
+            _myNewObject1.AddTheNumbers();
+            _myNewObject1.PrintResult();
+
+            MyObject _myNewObject2 = new MyObject(1, 3, 5, 7, 9);
+            _myNewObject2.AddTheNumbers();
+            _myNewObject2.PrintResult();
+            _myNewObject2.AddToExistent(11);
+            _myNewObject2.PrintResult();
+
         }
     }
 
-    class myObject
+    class MyObject
     {
+        private List<int> _numbers;
+        private int _sum;
 
-        public int Do(int a, int b)
+        public MyObject(int a, int b)
         {
-            return a + b;
+            this._sum = 0;
+            this._numbers = new List<int> { a, b };
         }
 
-        public int DoExtended(int a, int b, int c)
-        { return a + b + c;
+        public MyObject(int a, int b, int c)
+        {
+            this._sum = 0;
+            this._numbers = new List<int> { a, b, c };
+        }
+
+        public MyObject(params int[] numbers)
+        {
+            this._sum = 0;
+            this._numbers = new List<int>(numbers);
+        }
+        
+        public virtual void AddToExistent(int number)
+        {
+            this._numbers.Add(number);
+            this._sum += number;
+        }
+
+        public virtual int AddTheNumbers()
+        {
+            this._sum = 0;
+            foreach (int num in _numbers)
+                this._sum += num;
+
+            return this._sum;
+        }
+
+        public virtual void PrintResult()
+        {
+            Console.WriteLine(this._sum);
         }
     }
 }

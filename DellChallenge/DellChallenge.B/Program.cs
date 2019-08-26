@@ -16,46 +16,72 @@ namespace DellChallenge.B
     {
         void Eat();
         void Drink();
+
+    }
+
+    public interface IFlyingSpecies {
         void Fly();
+    }
+
+    public interface ISwimmingSpecies {
         void Swim();
     }
 
-    public class Species
+    public class Species:ISpecies
     {
-        public virtual void GetSpecies()
-        {
-            Console.WriteLine($"Echo who am I?");
+        public virtual void Drink() {
+
+            Console.WriteLine("Drink");
+
+        }
+
+        public virtual void Eat() {
+
+            Console.WriteLine("Eat");
+
         }
     }
 
-    public class Human : ISpecies
+    public class FlyingSpecies : Species, IFlyingSpecies
     {
-        public void Drink()
+        public virtual void Fly()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Fly");
         }
+    }
 
-        public void Eat()
+    public class SwimmingSpecies : Species, ISwimmingSpecies
+    {
+        public virtual void Swim()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Swimming");
+        }
+    }
+
+    public class Human : Species, IFlyingSpecies, ISwimmingSpecies
+    {
+        public override void Eat()
+        {
+            Console.WriteLine("Eat like a human");
         }
 
         public void Fly()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Fly with an airplane");
         }
 
         public void Swim()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Swim with a life jacket for safety!");
         }
     }
 
-    public class Bird
+    public class Bird : FlyingSpecies
     {
+        
     }
 
-    public class Fish
+    public class Fish : SwimmingSpecies
     {
     }
 }

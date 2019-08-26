@@ -1,10 +1,12 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Home from "../components/home";
 import Privacy from "../components/privacy";
 import Products from "../components/products";
 import NewProduct from "../components/newproduct";
 import CookieConsent from "react-cookie-consent";
+import Delete from "../components/delete";
+import Update from "../components/update";
 
 const ReactRouter = () => {
   return (
@@ -25,6 +27,8 @@ const ReactRouter = () => {
           <Route path="/privacy" component={Privacy} />
           <Route path="/products" component={Products} />
           <Route path="/newproduct" component={NewProduct} />
+          <Route path="/delete" component={Delete} />
+          <Route path="/update/:id" component={Update} />
         </main>
       </div>
     </React.Fragment>

@@ -27,9 +27,40 @@ namespace DellChallenge.D1.Api.Dal
             return addedDto;
         }
 
+        public ProductDto Get(string id)
+        {
+            var product = GetProductById(id);
+            return MapToDto(product);
+           
+        }
+
         public ProductDto Delete(string id)
         {
-            throw new System.NotImplementedException();
+            var product = GetProductById(id);
+            _context.Remove(product);
+            _context.SaveChanges();
+            return MapToDto(product);
+        }
+
+        public ProductDto Put(string id, ProductDto updatedProduct)
+        {
+            var product = GetProductById(id);
+            product.Name = updatedProduct.Name;
+            product.Category = updatedProduct.Category;
+            _context.Products.Update(product);
+            _context.SaveChanges();
+            return MapToDto(product);
+
+        }
+
+        private Product GetProductById(string id)
+        {
+            var product = _context.Products.Where(e => e.Id == id).FirstOrDefault();
+
+            if (product == null)
+                throw new System.Exception("No product where found with this id");
+
+            return product;
         }
 
         private Product MapToData(NewProductDto newProduct)

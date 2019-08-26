@@ -6,11 +6,23 @@
 <h4>All Products</h4>
 <hr />
 
-@foreach (var item in Model)
-{
-    <div class="row">
-        <div class="col-md-4">
-            @item.Name - @item.Category
+<div class="container-fluid">
+    @foreach (var item in Model)
+    {
+        <div class="row mb-1">
+            <div class="col-md-4">
+                @item.Name - @item.Category
+            </div>
+            <div class="col text-right">
+                <a class="btn btn-danger" asp-area="" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id">
+                    Sterge
+                </a>
+
+                <a class="btn btn-primary" asp-area="" asp-controller="Product" asp-action="Update" asp-route-id="@item.Id">
+                    Editeaza
+                </a>
+            </div>
         </div>
-    </div>
-}
+        <hr />
+    }
+</div>

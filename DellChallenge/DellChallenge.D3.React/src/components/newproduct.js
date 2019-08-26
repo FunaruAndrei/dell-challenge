@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import Validation from "../validation";
+import $ from "jquery";
 
 class NewProduct extends Component {
   constructor() {
@@ -8,30 +8,44 @@ class NewProduct extends Component {
     this.state = {
       Name: "",
       Category: "",
-      Success: false,
+      Success: false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit = event => {
-    event.preventDefault();
-    let postData = {
-      Name: this.state.Name,
-      Category: this.state.Category
-    };
 
-    fetch("http://localhost:5000/api/products", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+  componentDidMount() {
+    $("#newProductForm").validate({
+      rules: {
+        Name: "required"
       },
-      mode: "cors",
-      body: JSON.stringify(postData)
-    })
-    .then(res => res.json())
-    .then(this.props.history.push('/products'))
-    .catch(err => console.log(err));
+      messages: {
+        Name: "Please enter a name!"
+      }
+    });
+  }
+
+  handleSubmit = event => {
+    if ($("#newProductForm").valid()) {
+      event.preventDefault();
+      let postData = {
+        Name: this.state.Name,
+        Category: this.state.Category
+      };
+
+      fetch("http://localhost:5000/api/products", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        mode: "cors",
+        body: JSON.stringify(postData)
+      })
+        .then(res => res.json())
+        .then(this.props.history.push("/products"))
+        .catch(err => console.log(err));
+    }
   };
 
   handleInputChange = event => {
@@ -46,7 +60,7 @@ class NewProduct extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form id="newProductForm" onSubmit={this.handleSubmit}>
         <h4>Add new Product</h4>
         <div className="form-group">
           <label className="control-label" htmlFor="Name">
@@ -59,6 +73,7 @@ class NewProduct extends Component {
             name="Name"
             onChange={this.handleInputChange}
             value={this.state.Name}
+            required
           />
           <span
             className="text-danger field-validation-valid"
@@ -85,7 +100,9 @@ class NewProduct extends Component {
           />
         </div>
         <div className="form-group">
-          <button className="btn btn-primary">Submit</button>
+          <button className="btn btn-primary">
+            Submit
+          </button>
         </div>
         <Validation />
       </form>
